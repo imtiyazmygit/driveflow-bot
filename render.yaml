@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: driveflow-bot
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt && pip install gunicorn==23.0.0
+    startCommand: gunicorn --bind 0.0.0.0:$PORT wsgi:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.8
+      - key: FLASK_SECRET_KEY
+        value: change-this-secret
+      - key: CLIENT_USERNAME
+        value: client
+      - key: CLIENT_PASSWORD
+        value: change-me

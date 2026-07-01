@@ -5,3 +5,4 @@ requests
 slack_sdk
 twilio
 flask
+gunicorn==23.0.0
