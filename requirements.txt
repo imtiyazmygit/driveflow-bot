@@ -1,0 +1,6 @@
+playwright
+playwright-stealth
+pyyaml
+requests
+slack_sdk
+twilio
