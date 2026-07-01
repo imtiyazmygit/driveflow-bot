@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Booking Dashboard</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 40px; background: #f7f9fc; color: #1f2937; }
+      .card { max-width: 900px; margin: 0 auto; background: white; padding: 24px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+      input, select, button { width: 100%; padding: 10px; margin-top: 8px; border-radius: 8px; border: 1px solid #cbd5e1; }
+      button { background: #2563eb; color: white; border: none; cursor: pointer; }
+      table { width: 100%; border-collapse: collapse; margin-top: 18px; }
+      th, td { border: 1px solid #e5e7eb; padding: 10px; text-align: left; }
+      .flash { padding: 10px; margin-bottom: 12px; border-radius: 8px; }
+      .success { background: #ecfdf3; color: #065f46; }
+      .error { background: #fef2f2; color: #b91c1c; }
+      .info { background: #eff6ff; color: #1d4ed8; }
+      .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="topbar">
+        <h2>Booking Request Portal</h2>
+        <a href="/logout">Logout</a>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <form method="post" action="/request-booking">
+        <p>Select your preferred test centre and provide an email address for status updates.</p>
+        <label>Preferred Test Centre</label>
+        <select name="centre" required>
+          <option value="">Select a centre</option>
+          <option>Isleworth</option>
+          <option>Pinner</option>
+          <option>Slough</option>
+          <option>Goodmayes</option>
+          <option>Loughton</option>
+          <option>Southall</option>
+          <option>Greenford</option>
+          <option>Yeading</option>
+          <option>Oxford</option>
+          <option>Basingstoke</option>
+          <option>Hendon</option>
+          <option>Mill Hill</option>
+          <option>Tolworth</option>
+          <option>Morden</option>
+          <option>Chertsey</option>
+          <option>Uxbridge</option>
+          <option>Chingford</option>
+          <option>Enfield</option>
+        </select>
+        <label>Email for updates</label>
+        <input name="email" type="email" placeholder="you@example.com" required />
+        <button type="submit">Submit Booking Request</button>
+      </form>
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Centre</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Requested At</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in requests %}
+            <tr>
+              <td>{{ item.id }}</td>
+              <td>{{ item.centre }}</td>
+              <td>{{ item.email }}</td>
+              <td>{{ item.status }}</td>
+              <td>{{ item.requested_at }}</td>
+              <td>
+                <form method="post" action="/notify/{{ item.id }}">
+                  <button type="submit">Send Update</button>
+                </form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
